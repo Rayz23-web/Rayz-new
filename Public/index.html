@@ -264,7 +264,7 @@ H.mksub=async()=>{
   const r=await api('/subs','POST',b);closeModal();await refresh();
   r.gerr?toast('Google: '+r.gerr,true):toast('Abonelik hazır 🚀');
 };
-H.delsub=async d=>{if(!confirm('Bu abonelik silinsin mi?'))return;await api('/subs/'+d.id,'DELETE');await refresh();toast('Silindi')};
+H.delsub=async d=>{if(!confirm('Bu abonelik silinsin mi?'))return;const r=await api('/subs/'+d.id,'DELETE');const g=await pushSubs(r.gerr?{gs:r.gs||{waiting:1}}:null);await refresh();toast(g&&g.gerr?'Silindi ama Google hatası: '+g.gerr:'Silindi, Happ\'ta Deleted Subs görünecek')};
 
 /* users */
 H.newuser=()=>modal(`<h3>👤 Yeni Kullanıcı</h3>
@@ -292,11 +292,12 @@ H.saveuser=async d=>{
   await api('/users/'+encodeURIComponent(d.k),'PATCH',b);closeModal();await refresh();toast('Kaydedildi ✓');
 };
 H.resetdev=async d=>{if(!confirm('Tüm cihazlar sıfırlansın mı? Kullanıcı tekrar giriş yapmalı.'))return;await api('/users/'+encodeURIComponent(d.k),'PATCH',{resetDevices:true});await refresh();toast('Cihazlar sıfırlandı')};
-H.deluser=async d=>{if(!confirm('Kullanıcı ve tüm abonelikleri silinsin mi?'))return;await api('/users/'+encodeURIComponent(d.k),'DELETE');await refresh();toast('Silindi')};
+H.deluser=async d=>{if(!confirm('Kullanıcı ve tüm abonelikleri silinsin mi?'))return;const r=await api('/users/'+encodeURIComponent(d.k),'DELETE');const g=await pushSubs(r);await refresh();toast(g&&g.gerr?'Silindi ama Google hatası: '+g.gerr:'Silindi, abonelikler Deleted Subs oldu')};
 
 /* settings */
-H.addsrv=async()=>{const r=await api('/servers','POST',{links:val('sv_links')});await refresh();toast(r.added+' server eklendi'+(r.bad?` · ${r.bad} geçersiz`:''))};
-H.delsrv=async d=>{await api('/servers/'+d.id,'DELETE');await refresh();toast('Server silindi')};
+const pushSubs=async r0=>{let g=r0&&r0.gs,n=0;while(g&&g.waiting>0&&!g.gerr&&n<15){toast('Abonelikler güncelleniyor... ('+g.waiting+' kaldı)');try{g=await api('/refresh','POST',{})}catch{break}n++}return g};
+H.addsrv=async()=>{const r=await api('/servers','POST',{links:val('sv_links')});toast(r.added+' server eklendi, abonelikler güncelleniyor...');const g=await pushSubs(r);await refresh();toast(g&&g.gerr?'Server eklendi ama Google hatası: '+g.gerr:r.added+' server eklendi, abonelikler güncellendi'+(r.bad?` · ${r.bad} geçersiz`:''))};
+H.delsrv=async d=>{const r=await api('/servers/'+d.id,'DELETE');const g=await pushSubs(r);await refresh();toast(g&&g.gerr?'Server silindi ama Google hatası: '+g.gerr:'Server silindi, abonelikler güncellendi')};
 H.copyall=()=>copy(S.servers.map(s=>s.link).join('\n'));
 H.dlsrv=()=>{
   if(!S.servers.length)throw new Error('Önce server ekle');
