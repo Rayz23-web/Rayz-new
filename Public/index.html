@@ -1,1 +1,355 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>RAYZ PANEL</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--line:rgba(255,255,255,.1);--txt:#eef0ff;--mut:#9aa0c3;--ok:#2be3a0;--warn:#ffb84a;--bad:#ff5d7a;--g:linear-gradient(135deg,#7c5cff 0%,#18d8ff 100%)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--txt);font:400 15px/1.5 'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;padding-bottom:104px}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:-1;background:#000}
+.wrap{max-width:720px;margin:0 auto;padding:22px 16px}
+.logo{font-weight:800;letter-spacing:.16em;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo.big{font-size:26px}
+.mut{color:var(--mut)}
+.center{text-align:center}
+.card{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:22px;padding:16px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);margin-bottom:14px;animation:up .45s both}
+@keyframes up{from{opacity:0;transform:translateY(12px)}}
+h3{margin:0 0 14px;font-size:20px}
+h4.sec{margin:22px 4px 10px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;margin-left:6px;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.1)}
+.badge.owner{background:linear-gradient(135deg,#ffb84a,#ff5d7a);color:#1a0b10}
+.badge.admin{background:#fff;color:#07080f}
+.badge.off{background:rgba(255,93,122,.2);color:var(--bad)}
+.badge.p{background:rgba(124,92,255,.25);color:#c9bcff}
+/* buttons (beyaz) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;color:#07080f;font-weight:600;font-size:14px;padding:13px 20px;border-radius:15px;background:#fff;box-shadow:0 10px 26px -10px rgba(255,255,255,.35);transition:transform .18s,box-shadow .18s,filter .18s;position:relative;overflow:hidden}
+.btn:hover{transform:translateY(-2px);filter:brightness(.92);box-shadow:0 14px 30px -10px rgba(255,255,255,.5)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.55;pointer-events:none}
+.btn.ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{background:rgba(255,255,255,.14);box-shadow:none;filter:none}
+.btn.danger{background:#fff;color:#ff5d7a;box-shadow:0 10px 26px -10px rgba(255,255,255,.35)}
+.btn.sm{padding:9px 13px;font-size:13px;border-radius:12px}
+.btn.big{padding:16px 22px;font-size:16px;border-radius:18px}
+.btn.block{width:100%}
+.link{background:none;border:0;color:var(--mut);cursor:pointer;margin-top:14px;width:100%;font-weight:500;text-decoration:underline;text-underline-offset:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.row>.btn{flex:1;min-width:92px}
+/* inputs */
+label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin-bottom:12px;letter-spacing:.03em}
+.in{display:block;width:100%;margin-top:6px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.06);outline:0;font-weight:500;transition:.2s}
+.in:focus{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.18);background:rgba(255,255,255,.09)}
+select.in option{background:#111}
+textarea.in{min-height:110px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.tile{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:18px;padding:14px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;animation:up .45s both}
+.tile svg{color:#fff}
+.tile b{font-size:18px}
+.tile span{font-size:11px;color:var(--mut)}
+/* sub card */
+.sub-title{font-weight:700;font-size:16px;line-height:1.6}
+.sub.dead{opacity:.6}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.meta span{font-size:12px;background:rgba(255,255,255,.07);padding:4px 10px;border-radius:99px}
+.bar{height:7px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:#fff;border-radius:9px;transition:width .6s}
+.linkrow{background:rgba(0,0,0,.4);border:1px dashed var(--line);border-radius:12px;padding:10px 12px;overflow-x:auto;white-space:nowrap}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px}
+.codebox{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:14px;padding:8px 8px 8px 14px;margin:10px 0}
+.codebox span{display:flex;align-items:center;gap:8px;overflow:hidden}
+.desc{font-size:13px;color:var(--mut);margin-top:8px}
+.empty{text-align:center;color:var(--mut);padding:30px 16px}
+.prev{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px;font-weight:700;line-height:1.7;text-align:center}
+.hint{font-size:12px;color:var(--mut);margin:-4px 0 12px}
+.srv{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.srv:last-child{border:0}
+.srv .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px}
+.crow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:8px;margin-bottom:8px}
+.crow .in{margin:0;padding:11px 12px}
+.crow button{padding:0 12px}
+/* footer + nav */
+.foot{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;align-items:center;margin:26px 0 6px;color:var(--mut);font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid var(--line);font-weight:600;font-size:13px;color:var(--txt);transition:.2s}
+.chip:hover{background:#fff;color:#07080f;transform:translateY(-2px)}
+.nav{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:4px;padding:7px;border-radius:24px;background:rgba(10,10,10,.9);border:1px solid var(--line);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:20;box-shadow:0 20px 50px -10px rgba(0,0,0,.9)}
+.nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 20px;border-radius:18px;color:var(--mut);font-size:11px;font-weight:600;cursor:pointer;transition:.25s}
+.nav button.on{background:#fff;color:#07080f;box-shadow:0 8px 22px -8px rgba(255,255,255,.4)}
+/* login */
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:440px}
+.lc{padding:26px 22px}
+.rocket{font-size:46px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-6deg)}}
+/* modal + toast */
+.mback{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;z-index:50;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#0a0a0a;border:1px solid var(--line);border-radius:28px 28px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));animation:slide .3s cubic-bezier(.2,.9,.3,1)}
+@keyframes slide{from{transform:translateY(60px);opacity:0}}
+@media(min-width:620px){.mback{align-items:center}.sheet{border-radius:28px}}
+#toast{position:fixed;top:14px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:99;pointer-events:none}
+.t{background:rgba(20,20,20,.95);border:1px solid var(--line);border-left:4px solid var(--ok);padding:11px 18px;border-radius:14px;font-weight:600;font-size:14px;box-shadow:0 12px 30px -8px rgba(0,0,0,.8);animation:slide .3s}
+.t.bad{border-left-color:var(--bad)}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="app"></div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=$('#app');
+const S={token:localStorage.getItem('dvr_t'),me:null,view:'home',subs:[],users:[],servers:[],contacts:[],settings:{}};
+const dev=(()=>{let d=localStorage.getItem('dvr_d');if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem('dvr_d',d)}return d})();
 
+/* icons */
+const P={home:'M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z',
+users:'M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M21 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',
+gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',
+plus:'M12 5v14M5 12h14',copy:'M9 9h11v11H9zM5 15H4V4h11v1',trash:'M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14',
+link:'M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1',
+out:'M9 21H5V3h4M16 17l5-5-5-5M21 12H9',key:'M21 2l-2 2m-7.6 7.6a5.5 5.5 0 1 1-7.8 7.8 5.5 5.5 0 0 1 7.8-7.8zM15.5 7.5l3 3L22 7l-3-3',
+send:'M22 2L11 13M22 2l-7 20-4-9-9-4z',clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 6v6l4 2',
+phone:'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM12 18h.01',
+bolt:'M13 2L3 14h9l-1 8 10-12h-9z',refresh:'M23 4v6h-6M1 20v-6h6M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15',
+server:'M2 4h20v6H2zM2 14h20v6H2zM6 7h.01M6 17h.01',ext:'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3',x:'M18 6L6 18M6 6l12 12'};
+const ic=(n,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${P[n]}"/></svg>`;
+
+/* helpers */
+const left=ts=>Math.ceil((ts-Date.now())/864e5);
+const val=id=>($('#'+id)?.value??'').trim();
+function toast(m,bad){const t=document.createElement('div');t.className='t'+(bad?' bad':'');t.textContent=m;$('#toast').appendChild(t);setTimeout(()=>t.remove(),3400)}
+function modal(h){closeModal();const d=document.createElement('div');d.className='mback';d.id='modal';d.innerHTML='<div class="sheet">'+h+'</div>';d.addEventListener('mousedown',e=>{if(e.target===d)closeModal()});document.body.appendChild(d)}
+function closeModal(){$('#modal')?.remove()}
+async function copy(t){try{await navigator.clipboard.writeText(t)}catch{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}toast('Kopyalandı ✓')}
+async function api(path,method='GET',body){
+  const r=await fetch('/api'+path,{method,headers:{'content-type':'application/json',...(S.token?{authorization:'Bearer '+S.token}:{})},body:body?JSON.stringify(body):undefined});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok){if(r.status===401&&S.token&&path!=='/login'){doLogout();toast('Oturum bitti, tekrar gir',true)}throw new Error(d.error||'Hata')}
+  return d;
+}
+function doLogout(){S.token=null;S.me=null;S.settings={};localStorage.removeItem('dvr_t');api('/public').then(r=>{S.contacts=r.contacts;render()}).catch(()=>{});render()}
+async function loadAll(){
+  const o=S.me.role==='owner';
+  const [a,b,c,d]=await Promise.all([api('/subs'),api('/servers'),api('/settings'),o?api('/users'):null]);
+  S.subs=a.subs;S.servers=b.servers;S.contacts=c.contacts;S.settings=c;S.users=d?d.users:[];
+}
+async function refresh(){const r=await api('/me');S.me=r.me;await loadAll();render()}
+
+/* views */
+const footer=()=>S.contacts?.length?`<div class="foot"><span>İletişim:</span>${S.contacts.map(c=>`<a class="chip" href="${esc(c.url)}" target="_blank" rel="noopener">${ic('send',15)} ${esc(c.label)}</a>`).join('')}</div>`:'';
+const tile=(i,v,l)=>`<div class="tile">${ic(i,20)}<b>${v}</b><span>${l}</span></div>`;
+
+function loginView(){
+return `<div class="wrap login"><div class="card lc">
+<div class="center" style="margin-bottom:18px"><div class="rocket">🚀</div><div class="logo big">RAYZ PANEL</div><p class="mut" style="margin:6px 0 0">VPN abonelik paneli</p></div>
+<label>Kullanıcı adı<input class="in" id="l_name" autocomplete="username" autocapitalize="none" placeholder="Adın"></label>
+<label>Kod<input class="in" id="l_code" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+<button class="btn block big" data-a="login">${ic('bolt')} Giriş Yap</button>
+</div>${footer()}</div>`}
+
+function subCard(s){
+  const dl=left(s.expiresAt),dead=dl<=0,pct=Math.max(0,Math.min(100,dl/s.days*100));
+  const adm=S.me.role!=='user';
+  const url=s.gurl||'';
+  return `<div class="card sub ${dead?'dead':''}">
+<div class="sub-title">🚀${Math.max(dl,0)}-Gün Galdy🚀<br>📶User:${esc(s.name)}📶</div>
+<div class="meta"><span>💾 Real: ${(+(s.usedGb||0).toFixed(2))} GB${s.gb?' / '+s.gb+' GB':' (Sınırsız)'}</span><span>📅 ${s.days} gün</span>${adm?`<span>👤 ${esc(s.ownerName)}</span>`:''}${dead?'<span style="color:var(--bad)">⛔ Bitti</span>':''}</div>
+<div class="bar"><i style="width:${pct}%"></i></div>
+<div class="linkrow"><code>${esc(url||'Google link hazırlanıyor... (Ayarlar / Netlify env kontrol et)')}</code></div>
+${s.desc?`<div class="desc">${esc(s.desc)}</div>`:''}
+<div class="row"><button class="btn sm" data-a="gcopy" data-v="${esc(s.gurl||'')}">${ic('copy',15)} 🌐 Google APIs</button><a class="btn sm ghost" href="${url?'happ://add/'+esc(url):'#'}">${ic('ext',15)} Happ'ta aç</a><button class="btn sm danger" data-a="delsub" data-id="${s.id}" style="flex:0 0 auto;min-width:0">${ic('trash',15)}</button></div></div>`}
+
+function homeView(){
+  const m=S.me,o=m.role==='owner';
+  const tiles=o?tile('users',S.users.length,'Kullanıcı')+tile('link',S.subs.length,'Abonelik')+tile('server',S.servers.length,'Server')
+  :tile('clock',m.expiresAt?Math.max(0,left(m.expiresAt))+' gün':'∞','Hesap süresi')+tile('phone',m.devices+'/'+m.deviceLimit,'Cihaz')+tile('link',m.codesUsed+'/'+m.codeLimit,'Kod hakkı');
+  return `${o?'':`<div class="card"><div class="mut" style="font-size:12px;font-weight:600">SENİN KODUN</div><div class="codebox"><span>${ic('key',16)}<code style="font-size:16px;font-weight:700">${esc(m.code)}</code></span><button class="btn sm ghost" data-a="copy" data-v="${esc(m.code)}">${ic('copy',15)}</button></div></div>`}
+<div class="tiles">${tiles}</div>
+<button class="btn block big" data-a="newsub">${ic('plus')} Yeni Abonelik</button>
+<h4 class="sec">Abonelikler (${S.subs.length})</h4>
+${S.subs.length?S.subs.map(subCard).join(''):'<div class="card empty">Henüz abonelik yok.<br>Yukarıdan ilk aboneliğini oluştur 🚀</div>'}`}
+
+function userCard(u){
+  const dl=u.expiresAt?left(u.expiresAt):null,expd=dl!==null&&dl<=0;
+  return `<div class="card"><div><b style="font-size:16px">${esc(u.name)}</b><span class="badge ${u.role}">${u.role}</span>${u.disabled?'<span class="badge off">kapalı</span>':''}${expd?'<span class="badge off">süre bitti</span>':''}</div>
+<div class="codebox"><span>${ic('key',15)}<code>${esc(u.code)}</code></span><button class="btn sm ghost" data-a="copy" data-v="${esc(u.code)}">${ic('copy',15)}</button></div>
+<div class="meta"><span>⏳ ${dl===null?'Sınırsız':Math.max(dl,0)+' gün'}</span><span>📱 ${u.devices}/${u.deviceLimit} cihaz</span><span>🔑 ${u.codesUsed}/${u.codeLimit} kod</span></div>
+<div class="row"><button class="btn sm" data-a="edituser" data-k="${esc(u.key)}">Düzenle</button><button class="btn sm ghost" data-a="resetdev" data-k="${esc(u.key)}">${ic('refresh',15)} Cihazları sıfırla</button><button class="btn sm danger" data-a="deluser" data-k="${esc(u.key)}" style="flex:0 0 auto;min-width:0">${ic('trash',15)}</button></div></div>`}
+
+function usersView(){
+  return `<button class="btn block big" data-a="newuser">${ic('plus')} Yeni Kullanıcı</button>
+<h4 class="sec">Kullanıcılar (${S.users.length})</h4>
+${S.users.length?S.users.map(userCard).join(''):'<div class="card empty">Henüz kullanıcı yok.<br>Kullanıcı eklemezsen kimse giriş yapamaz.</div>'}`}
+
+function settingsView(){
+  const m=S.me,o=m.role==='owner';
+  const dl=m.expiresAt?Math.max(0,left(m.expiresAt))+' gün kaldı':'Sınırsız';
+  let h=`<div class="card"><h3>👤 Profil</h3>
+<div class="meta"><span>${esc(m.name)}</span><span class="badge ${m.role}" style="margin:0">${m.role}</span>${o?'':`<span>⏳ ${dl}</span>`}</div>
+${o?'':`<div class="codebox"><span>${ic('key',15)}<code>${esc(m.code)}</code></span><button class="btn sm ghost" data-a="copy" data-v="${esc(m.code)}">${ic('copy',15)}</button></div>`}</div>`;
+  if(o){
+    h+=`<div class="card"><h3>🖥️ Server Ekle</h3><p class="mut" style="margin:0 0 10px;font-size:13px">Her satıra bir link: <b>ss</b> · <b>vmess</b> · <b>vless</b> · <b>trojan</b> · <b>hy2</b></p>
+<textarea class="in" id="sv_links" placeholder="vless://...&#10;vmess://...&#10;trojan://...&#10;ss://...&#10;hy2://..."></textarea>
+<button class="btn block" style="margin-top:10px" data-a="addsrv">${ic('plus')} Server Ekle</button>
+<h4 class="sec" style="margin-top:18px">Serverler (${S.servers.length})</h4>
+${S.servers.length?S.servers.map(s=>`<div class="srv"><span class="badge p" style="margin:0">${esc(s.proto)}</span><div class="n">${esc(s.name)}</div><button class="btn sm ghost" data-a="copy" data-v="${esc(s.link)}" style="padding:8px 10px">${ic('copy',14)}</button><button class="btn sm danger" data-a="delsrv" data-id="${s.id}" style="padding:8px 10px">${ic('trash',14)}</button></div>`).join(''):'<div class="empty" style="padding:14px">Server yok</div>'}
+${S.servers.length?`<div class="row"><button class="btn sm ghost" data-a="copyall">${ic('copy',15)} Hepsini kopyala</button><button class="btn sm ghost" data-a="dlsrv">${ic('copy',15)} servers.txt indir</button></div>`:''}</div>
+<div class="card"><h3>💬 İletişim Linkleri</h3><p class="mut" style="margin:0 0 10px;font-size:13px">Panelin altında ve abonelikte görünür. Yazı + link gir.</p>
+<div id="crows">${S.contacts.map(contactRow).join('')}</div>
+<div class="row"><button class="btn sm ghost" data-a="addct">${ic('plus',15)} Satır ekle</button><button class="btn sm" data-a="savect">Kaydet</button></div></div>`;
+  }
+  if(o){
+    h+=`<div class="card"><h3>🌐 Google APIs</h3><p class="mut" style="margin:0 0 10px;font-size:13px">Her abonelik için www.googleapis.com linki otomatik yapılır. Service Account Netlify env'den (GOOGLE_CLIENT_EMAIL + GOOGLE_PRIVATE_KEY) okunur. Kota hatası olursa Apps Script yedeği:</p>
+<label>Google API Key<input class="in" id="gk_api" value="${esc(S.settings.apiKey||'')}" autocomplete="off" spellcheck="false"></label>
+<label>Apps Script URL<input class="in" id="gk_script" value="${esc(S.settings.scriptUrl||'')}" autocomplete="off" spellcheck="false"></label>
+<label>Sync Key<input class="in" id="gk_sync" value="${esc(S.settings.syncKey||'')}" autocomplete="off" spellcheck="false"></label>
+<button class="btn block" style="margin-top:10px" data-a="savegk">Kaydet</button></div>`;
+  }
+  return h+`<button class="btn block danger big" data-a="logout">${ic('out')} Çıkış Yap</button>`}
+const contactRow=c=>`<div class="crow"><input class="in" placeholder="@kullanici" value="${esc(c.label)}"><input class="in" placeholder="https://t.me/kullanici" value="${esc(c.url)}"><button class="btn sm danger" data-a="delct">${ic('x',15)}</button></div>`;
+
+function render(){
+  if(!S.me){app.innerHTML=loginView();return}
+  const o=S.me.role==='owner';
+  if(S.view==='users'&&!o)S.view='home';
+  const v=S.view==='users'?usersView():S.view==='settings'?settingsView():homeView();
+  const nb=(k,i,l)=>`<button class="${S.view===k?'on':''}" data-a="go" data-v="${k}">${ic(i,20)}${l}</button>`;
+  app.innerHTML=`<div class="wrap"><div class="top"><div><div class="logo big">RAYZ PANEL</div><div class="mut" style="font-size:13px">Salam, <b style="color:var(--txt)">${esc(S.me.name)}</b><span class="badge ${S.me.role}">${S.me.role}</span></div></div></div>${v}${footer()}</div>
+<div class="nav">${nb('home','home','Abonelik')}${o?nb('users','users','Kullanıcı'):''}${nb('settings','gear','Ayarlar')}</div>`;
+}
+
+/* handlers */
+const H={};
+H.go=d=>{S.view=d.v;render();scrollTo(0,0)};
+H.close=()=>closeModal();
+H.copy=d=>copy(d.v);
+H.gcopy=d=>{if(!d.v)throw new Error('Google link hazır değil: Drive ayarını kontrol et (Ayarlar)');return copy(d.v)};
+H.login=async()=>{
+  const r=await api('/login','POST',{device:dev,name:val('l_name'),code:val('l_code')});
+  S.token=r.token;localStorage.setItem('dvr_t',r.token);S.me=r.me;S.view='home';
+  await loadAll();render();
+};
+H.logout=()=>{doLogout()};
+
+/* subs */
+function prev(){const n=val('ns_name')||'Kod adı',d=parseInt(val('ns_days'))||0;const p=$('#prev');if(p)p.innerHTML=`🚀${d}-Gün Galdy🚀<br>📶User:${esc(n)}📶`}
+document.addEventListener('input',e=>{if(e.target.id==='ns_name'||e.target.id==='ns_days')prev()});
+H.newsub=()=>{
+  const m=S.me,o=m.role==='owner';
+  modal(`<h3>✨ Yeni Abonelik</h3>
+<div class="prev" id="prev"></div>
+<label>Kodun adı<input class="in" id="ns_name" maxlength="32" placeholder="Rayzz"></label>
+<div class="two"><label>Gün<input class="in" id="ns_days" type="number" min="1" value="30"></label><label>GB (0 = sınırsız)<input class="in" id="ns_gb" type="number" min="0" value="0"></label></div>
+<label>Açıklama (isteğe bağlı)<input class="in" id="ns_desc" maxlength="120" placeholder="Not..."></label>
+${o?`<label>Kimin için<select class="in" id="ns_for"><option value="">Kendim (owner)</option>${S.users.map(u=>`<option value="${esc(u.key)}">${esc(u.name)} (${u.role})</option>`).join('')}</select></label>`
+:`<p class="hint">Kalan kod hakkın: <b>${m.codeLimit-m.codesUsed}</b> / ${m.codeLimit}${m.expiresAt?` · Hesap süren: ${Math.max(0,left(m.expiresAt))} gün`:''}</p>`}
+<div class="row"><button class="btn ghost" data-a="close">İptal</button><button class="btn" data-a="mksub">${ic('bolt',16)} Oluştur</button></div>`);
+  prev();
+};
+H.mksub=async()=>{
+  const b={name:val('ns_name'),days:+val('ns_days'),gb:+val('ns_gb')||0,desc:val('ns_desc')};
+  if($('#ns_for'))b.forUser=val('ns_for');
+  const r=await api('/subs','POST',b);closeModal();await refresh();
+  r.gerr?toast('Google: '+r.gerr,true):toast('Abonelik hazır 🚀');
+};
+H.delsub=async d=>{if(!confirm('Bu abonelik silinsin mi?'))return;await api('/subs/'+d.id,'DELETE');await refresh();toast('Silindi')};
+
+/* users */
+H.newuser=()=>modal(`<h3>👤 Yeni Kullanıcı</h3>
+<div class="two"><label>Ad<input class="in" id="nu_name" placeholder="Rayzz" autocapitalize="none"></label><label>Kod (boş = otomatik)<input class="in" id="nu_code" placeholder="otomatik"></label></div>
+<div class="two"><label>Rol<select class="in" id="nu_role"><option value="user">User</option><option value="admin">Admin</option></select></label><label>Süre (gün, 0 = sınırsız)<input class="in" id="nu_days" type="number" min="0" value="30"></label></div>
+<div class="two"><label>Cihaz limiti<input class="in" id="nu_dev" type="number" min="1" value="3"></label><label>Yapabileceği kod<input class="in" id="nu_cod" type="number" min="0" value="3"></label></div>
+<p class="hint">Adı ve kodu bilen giriş yapar. Cihaz limiti dolunca yeni cihaz giremez.</p>
+<div class="row"><button class="btn ghost" data-a="close">İptal</button><button class="btn" data-a="mkuser">${ic('plus',16)} Oluştur</button></div>`);
+H.mkuser=async()=>{
+  const r=await api('/users','POST',{name:val('nu_name'),code:val('nu_code'),role:val('nu_role'),days:+val('nu_days'),deviceLimit:+val('nu_dev'),codeLimit:+val('nu_cod')});
+  closeModal();await refresh();toast('Kullanıcı eklendi · Kod: '+r.user.code);
+};
+H.edituser=d=>{
+  const u=S.users.find(x=>x.key===d.k);if(!u)return;
+  modal(`<h3>✏️ ${esc(u.name)}</h3>
+<div class="two"><label>Süre<select class="in" id="eu_mode"><option value="keep">Değiştirme</option><option value="add">Gün ekle</option><option value="unl">Sınırsız yap</option></select></label><label>Eklenecek gün<input class="in" id="eu_days" type="number" min="1" value="30"></label></div>
+<div class="two"><label>Cihaz limiti<input class="in" id="eu_dev" type="number" min="1" value="${u.deviceLimit}"></label><label>Kod limiti<input class="in" id="eu_cod" type="number" min="0" value="${u.codeLimit}"></label></div>
+<div class="two"><label>Yeni kod (boş = aynı)<input class="in" id="eu_code" placeholder="${esc(u.code)}"></label><label>Durum<select class="in" id="eu_dis"><option value="0">Aktif</option><option value="1" ${u.disabled?'selected':''}>Kapalı</option></select></label></div>
+<div class="row"><button class="btn ghost" data-a="close">İptal</button><button class="btn" data-a="saveuser" data-k="${esc(u.key)}">Kaydet</button></div>`);
+};
+H.saveuser=async d=>{
+  const mode=val('eu_mode'),b={deviceLimit:+val('eu_dev'),codeLimit:+val('eu_cod'),disabled:val('eu_dis')==='1'};
+  if(mode==='add')b.addDays=+val('eu_days');if(mode==='unl')b.unlimited=true;
+  if(val('eu_code'))b.newCode=val('eu_code');
+  await api('/users/'+encodeURIComponent(d.k),'PATCH',b);closeModal();await refresh();toast('Kaydedildi ✓');
+};
+H.resetdev=async d=>{if(!confirm('Tüm cihazlar sıfırlansın mı? Kullanıcı tekrar giriş yapmalı.'))return;await api('/users/'+encodeURIComponent(d.k),'PATCH',{resetDevices:true});await refresh();toast('Cihazlar sıfırlandı')};
+H.deluser=async d=>{if(!confirm('Kullanıcı ve tüm abonelikleri silinsin mi?'))return;await api('/users/'+encodeURIComponent(d.k),'DELETE');await refresh();toast('Silindi')};
+
+/* settings */
+H.addsrv=async()=>{const r=await api('/servers','POST',{links:val('sv_links')});await refresh();toast(r.added+' server eklendi'+(r.bad?` · ${r.bad} geçersiz`:''))};
+H.delsrv=async d=>{await api('/servers/'+d.id,'DELETE');await refresh();toast('Server silindi')};
+H.copyall=()=>copy(S.servers.map(s=>s.link).join('\n'));
+H.dlsrv=()=>{
+  if(!S.servers.length)throw new Error('Önce server ekle');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([S.servers.map(s=>s.link).join('\n')],{type:'text/plain'}));
+  a.download='servers.txt';document.body.appendChild(a);a.click();a.remove();toast('servers.txt indirildi ✓');
+};
+function readCt(){return [...document.querySelectorAll('.crow')].map(r=>{const i=r.querySelectorAll('input');return{label:i[0].value.trim(),url:i[1].value.trim()}})}
+H.addct=()=>{S.contacts=readCt();S.contacts.push({label:'',url:''});render()};
+H.delct=(d,el)=>{S.contacts=readCt();const i=[...document.querySelectorAll('.crow')].indexOf(el.closest('.crow'));S.contacts.splice(i,1);render()};
+H.savect=async()=>{const r=await api('/settings','PUT',{contacts:readCt()});S.contacts=r.contacts;render();toast('İletişim kaydedildi ✓')};
+
+H.savegk=async()=>{const r=await api('/settings','PUT',{apiKey:val('gk_api'),scriptUrl:val('gk_script'),syncKey:val('gk_sync')});S.settings=r;toast('Kaydedildi ✓')};
+
+/* events */
+document.addEventListener('click',async e=>{
+  const el=e.target.closest('[data-a]');if(!el)return;
+  const f=H[el.dataset.a];if(!f)return;
+  el.disabled=true;
+  try{await f(el.dataset,el)}catch(err){toast(err.message||'Hata',true)}finally{el.disabled=false}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('.login'))H.login().catch(err=>toast(err.message,true))});
+
+/* boot */
+(async()=>{
+  if(S.token){try{const r=await api('/me');S.me=r.me;await loadAll()}catch{S.token=null;S.me=null;localStorage.removeItem('dvr_t')}}
+  if(!S.me){try{S.contacts=(await api('/public')).contacts}catch{}}
+  render();
+})();
+</script>
+<script>
+(()=>{
+  const c=document.getElementById('stars'),x=c.getContext('2d');
+  let w,h,s=[];
+  function resize(){
+    w=c.width=innerWidth;h=c.height=innerHeight;
+    s=Array.from({length:Math.round(w*h/7000)},()=>({
+      x:Math.random()*w,y:Math.random()*h,
+      z:Math.random()*1.2+.3,v:Math.random()*.6+.15
+    }));
+  }
+  function frame(){
+    x.fillStyle='#000';x.fillRect(0,0,w,h);
+    for(const p of s){
+      p.x-=p.v*p.z*2.2;p.y+=p.v*p.z*.35;
+      if(p.x<-2||p.y>h+2){p.x=w+Math.random()*40;p.y=Math.random()*h*.6-20}
+      x.fillStyle=`rgba(255,255,255,${.35+p.z*.25})`;
+      x.beginPath();x.arc(p.x,p.y,p.z*1.1,0,Math.PI*2);x.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize',resize);resize();frame();
+})();
+</script>
+</body>
+</html>
